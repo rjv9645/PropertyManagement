@@ -1,2 +1,6 @@
 /.gradle/
+
 /Scripts/
+.dbeaver-data-sources.xml
+derby.log
+**.xtendbin
