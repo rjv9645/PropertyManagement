@@ -1,23 +1,18 @@
 package com.scoochshot.repository.pojo
 
+import org.eclipse.xtend.lib.annotations.Accessors
+import com.fasterxml.jackson.databind.ObjectMapper
+
+@Accessors
 class User {
 
+	var int id;
 	var String firstName;
 	var String phone;
 	
-	def getFirstName(){
-		firstName
-	}
-	
-	def setFirstName(String value){
-		firstName = value
-	}
-	
-	def getPhone(){
-		phone
-	}
-	
-	def setPhoneString(String value){
-		phone = value
+	override toString(){
+		var ObjectMapper toJson = new ObjectMapper()
+		
+		toJson.writeValueAsString(this)
 	}	
 }
