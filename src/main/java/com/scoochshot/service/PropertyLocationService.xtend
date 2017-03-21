@@ -8,26 +8,40 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.beans.factory.annotation.Autowired
 import com.scoochshot.repository.mapping.PropertyLocationMapper
 import java.util.List
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.scoochshot.repository.pojo.PropertyLocation
+import com.google.gson.Gson
+import java.util.HashMap
 
 @RestController
 @RequestMapping("/api/v1/locations/")
 class PropertyLocationService {
 	
+	//Contains the earth's radius in various units of measure.
+	val HashMap<String,Integer> unitsToEarthRadius = 
+		newHashMap("km" -> 6380,
+				   "m"  -> 3965)
+	
+	
 	@Autowired
 	var PropertyLocationMapper propertyDb;
 	
-	@RequestMapping(path="radius/{longitude}/{latitude}/{distance}", method=RequestMethod.GET,
+	@RequestMapping(path="radius/{longitude}/{latitude}/{distance}/{units}", method=RequestMethod.GET,
 				   produces=#[MediaType.APPLICATION_JSON_VALUE])
 	def getPropertiesWithinRadius(@PathVariable("longitude") float longitude, 
 								  @PathVariable("latitude")  float latitude, 
-								  @PathVariable("distance")  double distance)
+								  @PathVariable("distance")  double distance,
+								  @PathVariable("units") String units)
 	{
-		var List<PropertyLocation> locations = propertyDb.getPropertiesWithinRadius(longitude, latitude, distance)
+		var int earthRadius;
+		if(unitsToEarthRadius.containsKey(units))
+			earthRadius = unitsToEarthRadius.get(units)
+		else
+			earthRadius = unitsToEarthRadius.get("m")
 		
-		var ObjectMapper toJson = new ObjectMapper()
+		var List<PropertyLocation> locations = 
+			propertyDb.getPropertiesWithinRadius(longitude, latitude, distance, earthRadius)
 		 
-		toJson.writeValueAsString(locations)
+		var Gson jsonMorph = new Gson()
+		jsonMorph.toJson(locations)
 	}
 }

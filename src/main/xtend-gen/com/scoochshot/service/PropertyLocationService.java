@@ -1,10 +1,12 @@
 package com.scoochshot.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.scoochshot.repository.mapping.PropertyLocationMapper;
 import com.scoochshot.repository.pojo.PropertyLocation;
+import java.util.HashMap;
 import java.util.List;
-import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,21 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/locations/")
 @SuppressWarnings("all")
 public class PropertyLocationService {
+  private final HashMap<String, Integer> unitsToEarthRadius = CollectionLiterals.<String, Integer>newHashMap(Pair.<String, Integer>of("km", Integer.valueOf(6380)), 
+    Pair.<String, Integer>of("m", Integer.valueOf(3965)));
+  
   @Autowired
   private PropertyLocationMapper propertyDb;
   
-  @RequestMapping(path = "radius/{longitude}/{latitude}/{distance}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
-  public String getPropertiesWithinRadius(@PathVariable("longitude") final float longitude, @PathVariable("latitude") final float latitude, @PathVariable("distance") final double distance) {
-    try {
-      String _xblockexpression = null;
-      {
-        List<PropertyLocation> locations = this.propertyDb.getPropertiesWithinRadius(longitude, latitude, distance);
-        ObjectMapper toJson = new ObjectMapper();
-        _xblockexpression = toJson.writeValueAsString(locations);
+  @RequestMapping(path = "radius/{longitude}/{latitude}/{distance}/{units}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+  public String getPropertiesWithinRadius(@PathVariable("longitude") final float longitude, @PathVariable("latitude") final float latitude, @PathVariable("distance") final double distance, @PathVariable("units") final String units) {
+    String _xblockexpression = null;
+    {
+      int earthRadius = 0;
+      boolean _containsKey = this.unitsToEarthRadius.containsKey(units);
+      if (_containsKey) {
+        earthRadius = (this.unitsToEarthRadius.get(units)).intValue();
+      } else {
+        earthRadius = (this.unitsToEarthRadius.get("m")).intValue();
       }
-      return _xblockexpression;
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
+      List<PropertyLocation> locations = this.propertyDb.getPropertiesWithinRadius(longitude, latitude, distance, earthRadius);
+      Gson jsonMorph = new Gson();
+      _xblockexpression = jsonMorph.toJson(locations);
     }
+    return _xblockexpression;
   }
 }
