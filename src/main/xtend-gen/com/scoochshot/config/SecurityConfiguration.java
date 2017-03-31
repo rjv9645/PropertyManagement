@@ -16,7 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(final HttpSecurity http) throws Exception {
-    http.authorizeRequests().antMatchers("/", "/api/v1/locations/**").permitAll().anyRequest().authenticated().and().formLogin().permitAll().and().logout().permitAll().and().httpBasic();
+    http.authorizeRequests().antMatchers("/", "/api/v1/locations/**", "/**").permitAll().anyRequest().authenticated().and().formLogin().permitAll().and().logout().permitAll().and().httpBasic();
     http.csrf().disable();
   }
   

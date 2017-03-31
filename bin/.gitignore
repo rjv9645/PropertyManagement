@@ -2,4 +2,9 @@
 /.Main.xtendbin
 /Main.java
 /.gitignore
+/Library.class
+/LibraryTest.class
+/application.properties
 /com/
+/public/
+/templates/

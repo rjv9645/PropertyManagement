@@ -34,7 +34,11 @@ interface PropertyLocationMapper {
 														 @Param("latitude")    float latitude, 
 														 @Param("distance")    double distance, 
 														 @Param("earthRadius") int earthRadius);
+	
 	@Insert("INSERT INTO APP.LOCATIONS (ADDRESS, ADDREXT, LONGITUDE, LATITUDE, CITY, STATE, ZIP)
 			 VALUES (#{address},#{addrExt},#{longitude}, #{latitude}, #{city}, #{state}, #{zip})")
 	def void insertPropertyLocation(PropertyLocation location);
+	
+	@Select("SELECT * FROM APP.LOCATIONS WHERE ID=#{id}")
+	def PropertyLocation getPropertyById(@Param("id") int id);
 }

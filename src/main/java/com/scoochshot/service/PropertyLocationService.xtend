@@ -11,6 +11,7 @@ import java.util.List
 import com.scoochshot.repository.pojo.PropertyLocation
 import com.google.gson.Gson
 import java.util.HashMap
+import org.springframework.web.bind.annotation.CrossOrigin
 
 @RestController
 @RequestMapping("/api/v1/locations/")
@@ -20,11 +21,12 @@ class PropertyLocationService {
 	val HashMap<String,Integer> unitsToEarthRadius = 
 		newHashMap("km" -> 6380,
 				   "m"  -> 3965)
-	
+	val Gson jsonMorph = new Gson();
 	
 	@Autowired
 	var PropertyLocationMapper propertyDb;
 	
+	@CrossOrigin(origins="http://localhost:3000")
 	@RequestMapping(path="radius/{longitude}/{latitude}/{distance}/{units}", method=RequestMethod.GET,
 				   produces=#[MediaType.APPLICATION_JSON_VALUE])
 	def getPropertiesWithinRadius(@PathVariable("longitude") float longitude, 
@@ -41,7 +43,6 @@ class PropertyLocationService {
 		var List<PropertyLocation> locations = 
 			propertyDb.getPropertiesWithinRadius(longitude, latitude, distance, earthRadius)
 		 
-		var Gson jsonMorph = new Gson()
 		jsonMorph.toJson(locations)
 	}
 }

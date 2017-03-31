@@ -27,4 +27,7 @@ public interface PropertyLocationMapper {
   
   @Insert("INSERT INTO APP.LOCATIONS (ADDRESS, ADDREXT, LONGITUDE, LATITUDE, CITY, STATE, ZIP)\r\n\t\t\t VALUES (#{address},#{addrExt},#{longitude}, #{latitude}, #{city}, #{state}, #{zip})")
   public abstract void insertPropertyLocation(final PropertyLocation location);
+  
+  @Select("SELECT * FROM APP.LOCATIONS WHERE ID=#{id}")
+  public abstract PropertyLocation getPropertyById(@Param("id") final int id);
 }

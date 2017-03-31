@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.SpringApplication
 
 @SpringBootApplication
-class Main {
+class Main{
 	
 	/**
 	 * Main entry method of the PropertyManagement application

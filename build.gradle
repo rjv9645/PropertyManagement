@@ -38,6 +38,8 @@ dependencies {
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: springBootVersion
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: springBootVersion
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: springBootVersion
 	
 	// Derby
 	compile group: 'org.apache.derby', name: 'derby', version: '10.13.1.1'

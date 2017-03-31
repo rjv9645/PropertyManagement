@@ -16,7 +16,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
     override configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/","/api/v1/locations/**").permitAll()
+                .antMatchers("/","/api/v1/locations/**", "/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
