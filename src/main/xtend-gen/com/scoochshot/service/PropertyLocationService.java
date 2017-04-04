@@ -6,6 +6,7 @@ import com.scoochshot.repository.pojo.PropertyLocation;
 import java.util.HashMap;
 import java.util.List;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,18 +31,19 @@ public class PropertyLocationService {
   @CrossOrigin(origins = "http://localhost:3000")
   @RequestMapping(path = "radius/{longitude}/{latitude}/{distance}/{units}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
   public String getPropertiesWithinRadius(@PathVariable("longitude") final float longitude, @PathVariable("latitude") final float latitude, @PathVariable("distance") final double distance, @PathVariable("units") final String units) {
-    String _xblockexpression = null;
-    {
-      int earthRadius = 0;
-      boolean _containsKey = this.unitsToEarthRadius.containsKey(units);
-      if (_containsKey) {
-        earthRadius = (this.unitsToEarthRadius.get(units)).intValue();
-      } else {
-        earthRadius = (this.unitsToEarthRadius.get("m")).intValue();
-      }
-      List<PropertyLocation> locations = this.propertyDb.getPropertiesWithinRadius(longitude, latitude, distance, earthRadius);
-      _xblockexpression = this.jsonMorph.toJson(locations);
+    int earthRadius = 0;
+    boolean _containsKey = this.unitsToEarthRadius.containsKey(units);
+    if (_containsKey) {
+      earthRadius = (this.unitsToEarthRadius.get(units)).intValue();
+    } else {
+      earthRadius = (this.unitsToEarthRadius.get("m")).intValue();
     }
-    return _xblockexpression;
+    List<PropertyLocation> locations = this.propertyDb.getPropertiesWithinRadius(longitude, latitude, distance, earthRadius);
+    String locationJson = this.jsonMorph.toJson(locations);
+    InputOutput.<String>println(
+      String.format(
+        "getProperties for -> long: %s, lat:%s, dist: %s, units: %s", Float.valueOf(longitude), Float.valueOf(latitude), Double.valueOf(distance), units));
+    InputOutput.<String>println(("Returning: " + locationJson));
+    return locationJson;
   }
 }

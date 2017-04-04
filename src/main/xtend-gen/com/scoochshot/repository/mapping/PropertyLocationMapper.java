@@ -22,7 +22,7 @@ public interface PropertyLocationMapper {
    * 	- A List of PropertyLocations (or empty List) within the given distance.
    *    Units measured by the earth's radius.
    */
-  @Select("SELECT ADDRESS, CITY, STATE, ZIP,\r\n\t\t\t\tACOS( SIN( RADIANS(LATITUDE) ) * SIN( RADIANS(#{latitude}) ) + COS( RADIANS(LATITUDE) ) * \r\n\t\t\t\tCOS( RADIANS(#{latitude})) * COS(RADIANS(LONGITUDE) - RADIANS(#{longitude})) ) * #{earthRadius} AS DISTANCE\r\n\t\t\tFROM APP.LOCATIONS\r\n\t\t\tWHERE \r\n\t\t\t\tACOS( SIN( RADIANS(LATITUDE) ) * SIN( RADIANS(#{latitude}) ) + COS( RADIANS(LATITUDE) ) * \r\n\t\t\t\tCOS( RADIANS(#{latitude})) * COS(RADIANS(LONGITUDE) - RADIANS(#{longitude})) ) * #{earthRadius} < #{distance}\r\n\t\t\tORDER BY DISTANCE ASC")
+  @Select("SELECT ID, ADDRESS, CITY, STATE, ZIP,\r\n\t\t\t\tACOS( SIN( RADIANS(LATITUDE) ) * SIN( RADIANS(#{latitude}) ) + COS( RADIANS(LATITUDE) ) * \r\n\t\t\t\tCOS( RADIANS(#{latitude})) * COS(RADIANS(LONGITUDE) - RADIANS(#{longitude})) ) * #{earthRadius} AS DISTANCE\r\n\t\t\tFROM APP.LOCATIONS\r\n\t\t\tWHERE \r\n\t\t\t\tACOS( SIN( RADIANS(LATITUDE) ) * SIN( RADIANS(#{latitude}) ) + COS( RADIANS(LATITUDE) ) * \r\n\t\t\t\tCOS( RADIANS(#{latitude})) * COS(RADIANS(LONGITUDE) - RADIANS(#{longitude})) ) * #{earthRadius} < #{distance}\r\n\t\t\tORDER BY DISTANCE ASC")
   public abstract List<PropertyLocation> getPropertiesWithinRadius(@Param("longitude") final float longitude, @Param("latitude") final float latitude, @Param("distance") final double distance, @Param("earthRadius") final int earthRadius);
   
   @Insert("INSERT INTO APP.LOCATIONS (ADDRESS, ADDREXT, LONGITUDE, LATITUDE, CITY, STATE, ZIP)\r\n\t\t\t VALUES (#{address},#{addrExt},#{longitude}, #{latitude}, #{city}, #{state}, #{zip})")

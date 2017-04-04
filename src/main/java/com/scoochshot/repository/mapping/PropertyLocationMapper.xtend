@@ -22,7 +22,7 @@ interface PropertyLocationMapper {
 	 * 	- A List of PropertyLocations (or empty List) within the given distance.
 	 *    Units measured by the earth's radius. 
 	 */
-	@Select("SELECT ADDRESS, CITY, STATE, ZIP,
+	@Select("SELECT ID, ADDRESS, CITY, STATE, ZIP,
 				ACOS( SIN( RADIANS(LATITUDE) ) * SIN( RADIANS(#{latitude}) ) + COS( RADIANS(LATITUDE) ) * 
 				COS( RADIANS(#{latitude})) * COS(RADIANS(LONGITUDE) - RADIANS(#{longitude})) ) * #{earthRadius} AS DISTANCE
 			FROM APP.LOCATIONS

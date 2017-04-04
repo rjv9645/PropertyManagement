@@ -42,7 +42,14 @@ class PropertyLocationService {
 		
 		var List<PropertyLocation> locations = 
 			propertyDb.getPropertiesWithinRadius(longitude, latitude, distance, earthRadius)
-		 
-		jsonMorph.toJson(locations)
+		
+		var locationJson =  jsonMorph.toJson(locations)
+		println(String.format(
+			"getProperties for -> long: %s, lat:%s, dist: %s, units: %s",
+			longitude, latitude, distance, units))
+		println("Returning: " + locationJson)
+		
+		return locationJson
+		
 	}
 }
